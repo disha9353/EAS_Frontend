@@ -174,10 +174,10 @@ const EmployeeDashboard = () => {
                     className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
                   >
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                      {balance.leaveType.name}
+                      {balance.leaveType?.name || 'N/A'}
                     </p>
                     <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                      {balance.balance.toFixed(1)}
+                      {balance.balance?.toFixed(1) || 0}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">days left</p>
                   </div>

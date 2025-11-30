@@ -221,11 +221,27 @@ const leaveSlice = createSlice({
       .addCase(getMyLeaves.fulfilled, (state, action) => {
         state.myLeaves = action.payload.leaves;
       })
-      .addCase(getLeaveBalance.fulfilled, (state, action) => {
-        state.leaveBalance = action.payload.balances || [];
+      .addCase(getLeaveBalance.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(getLeaveBalance.rejected, (state) => {
+      .addCase(getLeaveBalance.fulfilled, (state, action) => {
+        state.loading = false;
+        // Handle different possible response structures
+        if (Array.isArray(action.payload)) {
+          state.leaveBalance = action.payload;
+        } else if (action.payload?.balances && Array.isArray(action.payload.balances)) {
+          state.leaveBalance = action.payload.balances;
+        } else if (action.payload?.data && Array.isArray(action.payload.data)) {
+          state.leaveBalance = action.payload.data;
+        } else {
+          state.leaveBalance = [];
+        }
+      })
+      .addCase(getLeaveBalance.rejected, (state, action) => {
+        state.loading = false;
         state.leaveBalance = [];
+        state.error = action.payload;
       })
       .addCase(getLeaveCalendar.fulfilled, (state, action) => {
         state.leaveCalendar = action.payload.leaves;

@@ -75,7 +75,16 @@ const LeaveRequest = () => {
   };
 
   const selectedLeaveType = leaveTypes.find((lt) => lt._id === formData.leaveType);
-  const selectedBalance = leaveBalance.find((b) => b.leaveType._id === formData.leaveType);
+  const selectedBalance = leaveBalance.find((b) => {
+    if (b.leaveType?._id) {
+      return b.leaveType._id === formData.leaveType;
+    }
+    // Handle case where leaveType might be an ID string
+    if (typeof b.leaveType === 'string') {
+      return b.leaveType === formData.leaveType;
+    }
+    return false;
+  });
 
   return (
     <Layout role="employee">
